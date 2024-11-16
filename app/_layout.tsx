@@ -6,12 +6,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
-import NavBar from '@/components/nav/nav';
+import NavBar from './navbar/nav';
+import { UsuarioProvider } from '@/components/context/userContext';
 
 // This is the default configuration
 configureReanimatedLogger({
@@ -39,11 +39,14 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={DarkTheme}>
+      <UsuarioProvider>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ header:()=> <NavBar showMenu={true}/> }} />
-        <Stack.Screen name="+not-found" />
+      <Stack.Screen name='(drawer)' options={{header: ()=> <NavBar showMenu={true}/>}}/>
+      <Stack.Screen name='(auth)' options={{headerShown:false}}/>
+
       </Stack>
-      <StatusBar style="auto" />
+      </UsuarioProvider>
     </ThemeProvider>
+
   );
 }

@@ -3,7 +3,7 @@ import CardProducts from '@/components/products/CardProducts'
 import { Productos } from '@/interfaces/products.interface'
 import ProductService from '@/services/products.service'
 import React, { useEffect, useState } from 'react'
-import { FlatList, SafeAreaView, StyleSheet, Text, View, Modal, TouchableOpacity, Button, Pressable } from 'react-native'
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 
 export default function ProductosScreen() {
   const [products, setProducts] = useState<Productos[]>([])

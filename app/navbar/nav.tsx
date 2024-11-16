@@ -9,6 +9,7 @@ const NavBar = ({ showMenu = true }) => {
     const colorScheme = useColorScheme();
     const backgroundColor = '#452e3f';
     const router = useRouter(); // Aquí usamos useRouter de Expo Router
+    const navigation = useNavigation();
 
     return (
         <AppBar
@@ -19,11 +20,8 @@ const NavBar = ({ showMenu = true }) => {
                         <Icon name='menu' {...props} /> :
                         <Icon name='arrow-left' {...props} />}
                     {...props}
-                    onPress={() =>
-                        showMenu
-                            ? router.push('/') // Usamos router.push() para navegar
-                            : router.back() // Usamos router.back() para regresar
-                    }
+                    onPress={() => showMenu ? navigation.dispatch(DrawerActions.openDrawer()) : router.back()}
+
                 />
             )}
             trailing={props => (
