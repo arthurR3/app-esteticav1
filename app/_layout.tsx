@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { UsuarioProvider } from '@/components/context/userContext';
 import { CarritoProvider } from '@/components/context/carritoContext';
 import Toast from 'react-native-toast-message';
+import { StripeProvider } from '@stripe/stripe-react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -30,6 +31,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <UsuarioProvider>
+      <StripeProvider publishableKey='pk_test_51Pj6bOEgq7lJOd5gw0SQlEDJhhS3ZazSnzvcJZG9Flh2hoUqBX4wq2S9w0c2eJH9pqNcfD4IeHl3YzE1FbdUuDk400rVEpe6qt'>
         <CarritoProvider>
           <Stack>
             <Stack.Screen
@@ -44,6 +46,7 @@ export default function RootLayout() {
             <Stack.Screen name='(auth)' options={{ headerShown: false }} />
           </Stack>
         </CarritoProvider>
+        </StripeProvider>
       </UsuarioProvider>
     </ThemeProvider>
   );

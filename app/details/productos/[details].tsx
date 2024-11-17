@@ -42,9 +42,9 @@ export default function DetailsScreen() {
       price: product.price,
       description: product.description,
       image: product.image,
-      quantity: quantity, // Cantidad que desea agregar al carrito
-      amount: product.amount, // Stock disponible
-      total: product.price * quantity, // Total calculado
+      quantity: quantity, 
+      amount: product.amount, 
+      total: product.price * quantity, 
     };
   
     addToCart(cartItem, quantity);

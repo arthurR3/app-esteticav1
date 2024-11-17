@@ -1,5 +1,5 @@
 export interface UserData {
-    id?:string;
+    idUser: number;
     name: string;
     last_name1: string;
     last_name2: string;
@@ -14,4 +14,13 @@ export interface DecodeToken {
     iat: number;
     exp: number;
 
+}
+
+export interface Address {
+    id: number;
+    id_user: number;
+    municipality: string;
+    cologne: string;
+    street: string;
+    cp: string;
 }

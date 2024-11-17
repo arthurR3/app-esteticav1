@@ -38,7 +38,6 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
 
     useEffect(()=>{
         if(state.token && decodeToken.idUser){
-          console.log(decodeToken.idUser)
             updateCartApi(decodeToken.idUser)
         }
     }, [decodeToken])
@@ -46,7 +45,6 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
         try {
             const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/${id_user}`)
             const data = response.data.data;
-            console.log(data)
             const cartData: CartItem[] = data.map((item: any) => ({
                 id: item.id,
                 name: item.name,
@@ -65,7 +63,8 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
                 await SecureStore.deleteItemAsync('Cart');
             }
         } catch (error) {
-            console.error('Error fetching Cart:', error);
+            //console.error('Error fetching Cart:', error);
+            return[]
         }
     }
 
@@ -151,12 +150,19 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
 
   const clearCart = async () => {
     try {
-      await axios.delete(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/${decodeToken.idUser}`);
+      // Limpia el carrito en el estado local
       setCart([]);
+  
+      // Borra el carrito en el almacenamiento seguro
+      await SecureStore.deleteItemAsync('Cart');
+  
+      console.log("Carrito limpiado correctamente");
     } catch (error) {
       console.error('Error clearing cart:', error);
+      // Si ocurre un error, se podría mostrar una alerta al usuario o hacer algo con el error
     }
   };
+  
 
   return (
     <CartContext.Provider value={{cart, addToCart, removeCart, clearCart}}>

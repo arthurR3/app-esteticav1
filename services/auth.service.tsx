@@ -43,7 +43,14 @@ class AuthService {
     }
   }
 
-  
+  public static async getAddress(id_user:number): Promise<any>{
+    try {
+      const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/address/${id_user}`)
+      return response.data;
+    } catch (error) {
+      console.log('Error getting address', error);
+    }
+  }
 
 }
 
