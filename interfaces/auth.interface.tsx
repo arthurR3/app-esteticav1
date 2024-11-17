@@ -24,3 +24,15 @@ export interface Address {
     street: string;
     cp: string;
 }
+
+export interface User{
+  id:number;
+  name:string;
+  last_name1:string;
+  last_name2:string;
+  email:string;
+  password:string;
+  phone:string;
+  image:string;
+  code:string;
+}

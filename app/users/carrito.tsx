@@ -61,7 +61,7 @@ export default function IndeX() {
   
     try {
       setIsLoading(true);  // Activa el indicador de carga
-      const response = await axios.post(`https://9a13-201-97-107-140.ngrok-free.app/api/v1/sales/create-payement`, {
+      const response = await axios.post(`https://back-estetica-production-e475.up.railway.app/api/v1/sales/create-payement`, {
         amount: total * 100,
       });
   
@@ -89,7 +89,7 @@ export default function IndeX() {
         })),
       };
   
-      await axios.post(`https://9a13-201-97-107-140.ngrok-free.app/api/v1/sales/confirmation-payment`, data);
+      await axios.post(`https://back-estetica-production-e475.up.railway.app/api/v1/sales/confirmation-payment`, data);
       Alert.alert('Compra realizada con éxito!');
       await clearCart();
     } catch (error) {

@@ -10,6 +10,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
     const handleSubmit = () => {
         try {
+            dispatch({ type: 'logout' }); // Cerrar sesión
             router.replace('/'); // Primero navega
             setTimeout(() => {
                 Alert.alert('Sesión cerrada', 'Has cerrado sesión correctamente');

@@ -28,21 +28,24 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ products }) => {
         horizontal={true}
         contentContainerStyle={{ flexDirection: "row" }}
       >
-        {products.map((item, index) => (
-          <Link href={`/details/productos/${item.id}`} asChild>
+        {products.map((item) => (
+          <Link href={`/details/productos/${item.id}`} asChild key={item.id}>
             <Pressable>
-              <View style={[styles.card]}>
-                <Image source={{ uri: item.image }} style={styles.image} />
-                <Text style={styles.title}>{item.name}</Text>
+
+              <View>  {/* Agregar contenedor View */}
+                <View style={[styles.card]}>
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                  <Text style={styles.title}>{item.name}</Text>
+                </View>
               </View>
             </Pressable>
+
           </Link>
         ))}
       </Swiper>
     </View>
   );
 };
-
 
 interface CarouselServicesProps {
   servicios: Servicios[]
@@ -64,20 +67,25 @@ const CarouselServices: React.FC<CarouselServicesProps> = ({ servicios }) => {
         horizontal={true}
         contentContainerStyle={{ flexDirection: "row" }}
       >
-        {servicios.map((item, index) => (
-          <Link href={`/details/servicios/${item.id}`} asChild>
+        {servicios.map((item) => (
+          <Link href={`/details/servicios/${item.id}`} asChild key={item.id}>
             <Pressable>
-              <View style={[styles.card]}>
-                <Image source={{ uri: item.image }} style={styles.image} />
-                <Text style={styles.title}>{item.name}</Text>
+
+              <View>  {/* Agregar contenedor View */}
+                <View style={[styles.card]}>
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                  <Text style={styles.title}>{item.name}</Text>
+                </View>
               </View>
             </Pressable>
+
           </Link>
         ))}
       </Swiper>
     </View>
   );
-}
+};
+
 
 
 
