@@ -12,9 +12,9 @@ export default function DetailsScreen() {
   const { details } = useLocalSearchParams()
   const [detailProduct, setDetailProduct] = useState<Productos | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
-  const[quantity] = useState(1)
+  const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCartContext()
-  const {state} = useUsuarioContext()
+  const { state } = useUsuarioContext()
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -27,8 +27,19 @@ export default function DetailsScreen() {
     fetchData()
   }, [details])
 
+  const increaseQuantity = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  };
+
+
   const handleAddToCart = (product: Productos) => {
-    if(!state.token){
+    if (!state.token) {
       Alert.alert(
         "Login Requerido",
         "Debe iniciar sesión para agregar productos al carrito.",
@@ -42,11 +53,11 @@ export default function DetailsScreen() {
       price: product.price,
       description: product.description,
       image: product.image,
-      quantity: quantity, 
-      amount: product.amount, 
-      total: product.price * quantity, 
+      quantity: quantity,
+      amount: product.amount,
+      total: product.price * quantity,
     };
-  
+
     addToCart(cartItem, quantity);
     Alert.alert(
       "Producto Agregado",
@@ -54,12 +65,12 @@ export default function DetailsScreen() {
       [{ text: "OK" }]
     );
   };
-  
+
 
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator  color="#0000ff" />
+        <ActivityIndicator color="#0000ff" />
         <Text>Cargando...</Text>
       </View>
     )
@@ -73,20 +84,26 @@ export default function DetailsScreen() {
           <Text style={styles.price}>${(detailProduct.price).toFixed(2)}</Text>
           <Text style={styles.title}>{detailProduct.name}</Text>
           <Text style={styles.description}>{detailProduct.description}</Text>
-          <Text style={{fontSize:24, fontWeight:'bold'}} >Stock Disponible</Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold' }} >Stock Disponible</Text>
           {detailProduct.amount > 0 ? (
-                        <Text style={{fontSize:24, fontWeight:'bold', marginBottom:10, color:'green'}}>{detailProduct.amount} unidades</Text>
-          ):(
-            <Text style={{fontSize:24, fontWeight:'bold', marginBottom:10, color:'red'}}>Sin unidades disponibles</Text>
+            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: 'green' }}>{detailProduct.amount} unidades</Text>
+          ) : (
+            <Text style={{ fontSize: 24, fontWeight: 'bold', marginBottom: 10, color: 'red' }}>Sin unidades disponibles</Text>
 
           )}
-          <View style={{marginTop:30}}>
+
+          <View style={styles.quantityContainer}>
+            <Button title="-" onPress={decreaseQuantity} disabled={quantity <= 1} />
+            <Text style={styles.quantity}>{quantity}</Text>
+            <Button title="+" onPress={increaseQuantity} />
+          </View>
+          <View style={{ marginTop: 30 }}>
             <View>
-            {detailProduct.amount > 0 ? (
-            <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={()=>{handleAddToCart(detailProduct)}} disabled={false}/>
-          ):(
-            <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={()=>{}} disabled/>
-          )}
+              {detailProduct.amount > 0 ? (
+                <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={() => { handleAddToCart(detailProduct) }} disabled={false} />
+              ) : (
+                <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={() => { }} disabled />
+              )}
             </View>
           </View>
         </View>
@@ -124,6 +141,16 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: 'bold',
     marginBottom: 20,
-    justifyContent:'flex-end'
+    justifyContent: 'flex-end'
+  },
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  quantity: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginHorizontal: 10,
   },
 })

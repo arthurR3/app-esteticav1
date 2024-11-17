@@ -1,7 +1,8 @@
 import { Productos } from "@/interfaces/products.interface";
 import { Servicios } from "@/interfaces/services.interface";
+import { Link } from "expo-router";
 import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Image, StyleSheet, Dimensions, Pressable } from "react-native";
 import Swiper from "react-native-swiper";
 const { width: screenWidth } = Dimensions.get("window");
 const itemsToShow = 3; // Número de elementos a mostrar
@@ -19,7 +20,7 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ products }) => {
         autoplay={true}
         autoplayTimeout={3}
         width={screenWidth}
-        height={screenWidth/2}
+        height={screenWidth / 2}
         loop={true}
         overScrollMode="auto"
         index={0}
@@ -28,10 +29,14 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ products }) => {
         contentContainerStyle={{ flexDirection: "row" }}
       >
         {products.map((item, index) => (
-          <View style={[styles.card]} key={index}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.title}>{item.name}</Text>
-          </View>
+          <Link href={`/details/productos/${item.id}`} asChild>
+            <Pressable>
+              <View style={[styles.card]}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <Text style={styles.title}>{item.name}</Text>
+              </View>
+            </Pressable>
+          </Link>
         ))}
       </Swiper>
     </View>
@@ -39,11 +44,11 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ products }) => {
 };
 
 
-interface CarouselServicesProps{
-  servicios:Servicios[]
+interface CarouselServicesProps {
+  servicios: Servicios[]
 }
 
-const CarouselServices: React.FC<CarouselServicesProps> = ({servicios}) =>{
+const CarouselServices: React.FC<CarouselServicesProps> = ({ servicios }) => {
   return (
     <View style={styles.container}>
       <Swiper
@@ -51,7 +56,7 @@ const CarouselServices: React.FC<CarouselServicesProps> = ({servicios}) =>{
         autoplay={true}
         autoplayTimeout={3}
         width={screenWidth}
-        height={screenWidth/2}
+        height={screenWidth / 2}
         loop={true}
         overScrollMode="auto"
         index={0}
@@ -60,10 +65,14 @@ const CarouselServices: React.FC<CarouselServicesProps> = ({servicios}) =>{
         contentContainerStyle={{ flexDirection: "row" }}
       >
         {servicios.map((item, index) => (
-          <View style={[styles.card]} key={index}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.title}>{item.name}</Text>
-          </View>
+          <Link href={`/details/servicios/${item.id}`} asChild>
+            <Pressable>
+              <View style={[styles.card]}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <Text style={styles.title}>{item.name}</Text>
+              </View>
+            </Pressable>
+          </Link>
         ))}
       </Swiper>
     </View>
@@ -74,14 +83,14 @@ const CarouselServices: React.FC<CarouselServicesProps> = ({servicios}) =>{
 
 const styles = StyleSheet.create({
   container: {
-    width:150,
+    width: 150,
     height: 160,
-    marginBottom:15,
-    backgroundColor:'transparent'
-},
+    marginBottom: 15,
+    backgroundColor: 'transparent'
+  },
   card: {
     backgroundColor: '#fff',
-    margin:'auto',
+    margin: 'auto',
     borderRadius: 10,
     alignItems: 'center',
     padding: 10,
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 100,
     borderRadius: 10,
-    aspectRatio:1
+    aspectRatio: 1
   },
   title: {
     marginTop: 5,
@@ -110,4 +119,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export {CarouselItem, CarouselServices}
+export { CarouselItem, CarouselServices }
