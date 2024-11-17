@@ -3,18 +3,9 @@ import axios from 'axios'
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useUsuarioContext } from './userContext';
 import { jwtDecode } from 'jwt-decode';
+import { CartItem } from '@/interfaces/products.interface';
 
 
-type CartItem = {
-    id: number;
-    name: string;
-    price: number;
-    description: string;
-    quantity: number;
-    amount: number;
-    image: string;
-    total: number;
-}
 type CartContextType = {
     cart: CartItem[];
     addToCart: (product: CartItem, quantity: number) => Promise<void>;
@@ -38,8 +29,8 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
         const initialCart = async () => {
             if (state.token) {
                 const decoded = jwtDecode(state.token) as { idUser: number, user: any }
-                decodeToken(decoded.user)
-                await updateCartApi(decoded.idUser)
+                setDecodeToken(decoded.user)
+                await updateCartApi(decodeToken.idUser)
             }
         }
         initialCart()
@@ -47,13 +38,15 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
 
     useEffect(()=>{
         if(state.token && decodeToken.idUser){
+          console.log(decodeToken.idUser)
             updateCartApi(decodeToken.idUser)
         }
     }, [decodeToken])
     const updateCartApi = async (id_user: number) => {
         try {
-            const response = await axios.get(`https://1e01-201-97-107-140.ngrok-free.app/api/v1/carts/${id_user}`)
+            const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/${id_user}`)
             const data = response.data.data;
+            console.log(data)
             const cartData: CartItem[] = data.map((item: any) => ({
                 id: item.id,
                 name: item.name,
@@ -120,7 +113,7 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
         ...newProduct,
         total: newProduct.quantity * newProduct.price,
       };
-      await axios.post(`https://1e01-201-97-107-140.ngrok-free.app/api/v1/carts/add/`, newCartItem);
+      await axios.post(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/add/`, newCartItem);
     } catch (error) {
       console.error('Error adding item to Cart:', error);
     }
@@ -128,7 +121,7 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
 
   const updateToCart = async (product_id: number, idUser: string, quantity: number) => {
     try {
-      await axios.put(`https://1e01-201-97-107-140.ngrok-free.app/api/v1/carts/${idUser}/${product_id}`, { quantity });
+      await axios.put(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/${idUser}/${product_id}`, { quantity });
     } catch (error) {
       console.error('Error updating product in cart:', error);
     }
@@ -150,7 +143,7 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
         productId,
         id_user: decodeToken.idUser,
       };
-      await axios.delete(`https://1e01-201-97-107-140.ngrok-free.app/api/v1/carts/removeProduct`, { data: cartDelete });
+      await axios.delete(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/removeProduct`, { data: cartDelete });
     } catch (error) {
       console.error('Error deleting item from cart:', error);
     }
@@ -158,7 +151,7 @@ export const CarritoProvider: React.FC<CarritoProps> = ({ children }) => {
 
   const clearCart = async () => {
     try {
-      await axios.delete(`https://1e01-201-97-107-140.ngrok-free.app/api/v1/carts/${decodeToken.idUser}`);
+      await axios.delete(`https://back-estetica-production-e475.up.railway.app/api/v1/carts/${decodeToken.idUser}`);
       setCart([]);
     } catch (error) {
       console.error('Error clearing cart:', error);
@@ -179,5 +172,3 @@ export const useCartContext = () => {
     }
     return context;
   };
-  
-  export default CartContext;

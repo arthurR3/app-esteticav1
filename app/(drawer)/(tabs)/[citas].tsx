@@ -150,17 +150,18 @@ export default function CitasScreen() {
       <SafeAreaView style={{ marginHorizontal: 18 }}>
         <Text style={styles.titleContainer}>Reserva una cita ahora mismo!</Text>
 
-        <InputLogin placeholder='Selecciona un servicio' image='cut-outline'>
           <Picker selectedValue={selectedService}
             onValueChange={(value) => { setSelectedService(value), setServiceObject(services.find(service => service.id === Number(value))) }}
-
+            style={{
+              color: 'black', // Asegura que el texto sea negro
+            }}
           >
             <Picker.Item label='Selecciona un servicio' value={null} />
             {services.map((service) => (
-              <Picker.Item key={service.id} label={service.name} value={service.id} />
+              <Picker.Item key={service.id} label={service.name} value={service.id} style={{ color: 'black' }} // Color de cada elemento
+              />
             ))}
           </Picker>
-        </InputLogin>
         <View>
           <CustomDatePicker onDateChange={handleDateChange} display='spinner' minimumDate={new Date(Date.now())} filterDate={isWorkDay} />
         </View>
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: 'grey',
     height: 50,
     fontSize: 14,
     fontWeight: '500',

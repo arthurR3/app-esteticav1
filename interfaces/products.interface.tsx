@@ -20,3 +20,14 @@ export interface Categoria {
 export interface Marca {
     name: string
 }
+
+export type CartItem = {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+    quantity: number;
+    amount: number;
+    image: string;
+    total: number;
+}

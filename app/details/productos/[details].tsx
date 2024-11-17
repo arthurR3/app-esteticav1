@@ -1,18 +1,20 @@
 import { useCartContext } from '@/components/context/carritoContext'
+import { useUsuarioContext } from '@/components/context/userContext'
 import CustomButton from '@/components/CustomButton'
 import InputLogin from '@/components/InputText'
-import { Productos } from '@/interfaces/products.interface'
+import { CartItem, Productos } from '@/interfaces/products.interface'
 import ProductService from '@/services/products.service'
 import { useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, ScrollView, Text, View, Button, Image, StyleSheet } from 'react-native'
+import { ActivityIndicator, ScrollView, Text, View, Button, Image, StyleSheet, Alert } from 'react-native'
 
 export default function DetailsScreen() {
   const { details } = useLocalSearchParams()
   const [detailProduct, setDetailProduct] = useState<Productos | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const[quantity] = useState(1)
   const { addToCart } = useCartContext()
-
+  const {state} = useUsuarioContext()
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -25,6 +27,34 @@ export default function DetailsScreen() {
     fetchData()
   }, [details])
 
+  const handleAddToCart = (product: Productos) => {
+    if(!state.token){
+      Alert.alert(
+        "Login Requerido",
+        "Debe iniciar sesión para agregar productos al carrito.",
+        [{ text: "OK" }]
+      );
+      return;
+    }
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      description: product.description,
+      image: product.image,
+      quantity: quantity, // Cantidad que desea agregar al carrito
+      amount: product.amount, // Stock disponible
+      total: product.price * quantity, // Total calculado
+    };
+  
+    addToCart(cartItem, quantity);
+    Alert.alert(
+      "Producto Agregado",
+      `${product.name} se agregó al carrito correctamente.`,
+      [{ text: "OK" }]
+    );
+  };
+  
 
   if (loading) {
     return (
@@ -53,7 +83,7 @@ export default function DetailsScreen() {
           <View style={{marginTop:30}}>
             <View>
             {detailProduct.amount > 0 ? (
-            <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={()=>{}} disabled={false}/>
+            <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={()=>{handleAddToCart(detailProduct)}} disabled={false}/>
           ):(
             <CustomButton title='Agregar al Carrito' iconName='cart-sharp' onPress={()=>{}} disabled/>
           )}
