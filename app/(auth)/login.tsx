@@ -41,7 +41,7 @@ export default function LoginScreen() {
   };
 
   const toogleAccount = () => {
-   // router.navigate('/(auth)/account');
+    router.push('/(auth)/account');
   };
 
   return (
@@ -81,8 +81,8 @@ export default function LoginScreen() {
           <CustomButton title='Iniciar Sesión' onPress={handleSubmit} disabled={loading} />
         )}
 
-{/*         <Link style={{ margin: 15, fontSize: 20, alignSelf: 'center' }} href={'/(auth)/forgetted'}>Recuperar contraseña</Link>
- */}        <CustomButton title='Crear cuenta' onPress={toogleAccount}  disabled={false} />
+        <Link style={{ margin: 15, fontSize: 20, alignSelf: 'center' }} href={'/(auth)/forgetted'}><Text>Recuperar contraseña</Text></Link>
+        <CustomButton title='Crear cuenta' onPress={toogleAccount}  disabled={false} />
       </View>
     </SafeAreaView>
   );

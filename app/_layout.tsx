@@ -1,32 +1,21 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, ThemeProvider } from '@react-navigation/native';
+import { useEffect } from 'react';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import {
-  configureReanimatedLogger,
-  ReanimatedLogLevel,
-} from 'react-native-reanimated';
 import NavBar from './navbar/nav';
+import 'react-native-reanimated';
 import { UsuarioProvider } from '@/components/context/userContext';
-
-// This is the default configuration
-configureReanimatedLogger({
-  level: ReanimatedLogLevel.warn,
-  strict: false, // Reanimated runs in strict mode by default
-});
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+import { CarritoProvider } from '@/components/context/carritoContext';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  DarkTheme.colors.background = '#fff0b4'
+
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  DarkTheme.colors.background = '#fff0b4'
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -40,13 +29,21 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={DarkTheme}>
       <UsuarioProvider>
-      <Stack>
-      <Stack.Screen name='(drawer)' options={{header: ()=> <NavBar showMenu={true}/>}}/>
-      <Stack.Screen name='(auth)' options={{headerShown:false}}/>
+        <CarritoProvider>
+        <Stack>
+          <Stack.Screen
+            name="(drawer)"
+            options={{ header: () => <NavBar showMenu={true} /> }}
+          />
+          {/* <Stack.Screen name='users/perfil' options={{header: ()=> <NavBar showMenu={true}/>}}/>
+        <Stack.Screen name='users/carrito' options={{header: ()=> <NavBar showMenu={true}/>}}/>*/}
+        <Stack.Screen name='details/servicios/[details]' options={{header:()=><NavBar showMenu={false}/>}}/>
+        <Stack.Screen name='details/productos/[details]' options={{header:()=><NavBar showMenu={false}/>}}/> 
 
-      </Stack>
+          <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+        </Stack>
+        </CarritoProvider>
       </UsuarioProvider>
     </ThemeProvider>
-
   );
 }

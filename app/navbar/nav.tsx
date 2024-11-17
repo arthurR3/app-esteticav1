@@ -3,12 +3,11 @@ import { StyleSheet, useColorScheme, View } from 'react-native';
 import { AppBar, IconButton, Avatar } from "@react-native-material/core";
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
-import { useRouter } from 'expo-router';
+import { router } from 'expo-router';
 
 const NavBar = ({ showMenu = true }) => {
     const colorScheme = useColorScheme();
     const backgroundColor = '#452e3f';
-    const router = useRouter(); // Aquí usamos useRouter de Expo Router
     const navigation = useNavigation();
 
     return (
@@ -20,7 +19,10 @@ const NavBar = ({ showMenu = true }) => {
                         <Icon name='menu' {...props} /> :
                         <Icon name='arrow-left' {...props} />}
                     {...props}
-                    onPress={() => showMenu ? navigation.dispatch(DrawerActions.openDrawer()) : router.back()}
+                    onPress={() => showMenu
+                        ? router.push('/drawer') // Usamos router.push() para navegar
+                        : router.back() // Usamos router.back() para regresar
+                    }
 
                 />
             )}
