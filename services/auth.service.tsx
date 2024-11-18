@@ -1,4 +1,5 @@
 import { UserData } from '@/interfaces/auth.interface';
+import { UserSales } from '@/interfaces/products.interface';
 import axios from 'axios';
 
 class AuthService {
@@ -62,6 +63,16 @@ class AuthService {
     }
   }
   
+  public static async getOrders(id_user:number): Promise<UserSales[]>{
+    try {
+      const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/sales/${id_user}`)
+     const data:UserSales[] =response.data.data 
+     return data
+    } catch (error) {
+      console.log('Error getting users', error);
+      return []
+    }
+  } 
 }
 
 export default AuthService;

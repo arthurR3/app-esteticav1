@@ -81,11 +81,11 @@ export default function IndeX() {
                 </View>
             </View>
 
-            <Pressable style={({ pressed }) => [styles.changePassword, { opacity: pressed ? 0.5 : 1 }]}>
+            <Pressable onPress={() => router.navigate('/forgetted')} style={({ pressed }) => [styles.changePassword, { opacity: pressed ? 0.5 : 1 }]}>
                 <Text style={styles.changePasswordText}>Cambiar contraseña</Text>
             </Pressable>
 
-            <Pressable style={({ pressed }) => [styles.logout, { opacity: pressed ? 0.5 : 1 }]}>
+            <Pressable onPress={handleSubmit } style={({ pressed }) => [styles.logout, { opacity: pressed ? 0.5 : 1 }]}>
                 <Text style={styles.logoutText}>Cerrar sesión</Text>
             </Pressable>
         </View>

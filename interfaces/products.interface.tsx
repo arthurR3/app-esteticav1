@@ -31,3 +31,29 @@ export type CartItem = {
     image: string;
     total: number;
 }
+
+interface ProductDetail {
+    id: number;
+    id_sale: number;
+    id_product: number;
+    product_name: string;
+    image_product: string;
+    amount: number;
+    unit_price: number;
+    subtotal: number;
+    category_id: number;
+    category_name: string;
+    brand_id: number;
+    brand_name: string;
+  }
+  
+  export interface UserSales {
+    id: number;
+    id_user: number;
+    id_payment: number;
+    id_address: number;
+    shipping_status: string; // Ejemplo: "Entregado", "Pendiente"
+    total: number;
+    date: string; // Fecha en formato ISO 8601
+    details: ProductDetail[]; // Detalles de los productos en la compra
+  }

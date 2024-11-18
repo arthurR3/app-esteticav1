@@ -40,6 +40,8 @@ export default function RootLayout() {
             />
             <Stack.Screen name='users/perfil' options={{ header: () => <NavBar showMenu={true} /> }} />
             <Stack.Screen name='users/carrito' options={{ header: () => <NavBar showMenu={true} /> }} />
+            <Stack.Screen name='users/misCitas' options={{ header: () => <NavBar showMenu={true} /> }} />
+            <Stack.Screen name='users/misCompras' options={{ header: () => <NavBar showMenu={true} /> }} />
             <Stack.Screen name='details/servicios/[details]' options={{ header: () => <NavBar showMenu={false} /> }} />
             <Stack.Screen name='details/productos/[details]' options={{ header: () => <NavBar showMenu={false} /> }} />
 

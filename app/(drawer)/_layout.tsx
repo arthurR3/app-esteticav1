@@ -70,13 +70,13 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
                         icon={({ color }) => (<Feather name='calendar' size={25} color={color} />)}
                         label={'Mis Compras'}
                         labelStyle={{ fontSize: 22 }}
-                        onPress={() => { router.push('/') }}
+                        onPress={() => { router.push('/users/misCompras') }}
                     />
                     <DrawerItem
                         icon={({ color }) => (<Feather name='calendar' size={25} color={color} />)}
                         label={'Mis Citas'}
                         labelStyle={{ fontSize: 22 }}
-                        onPress={() => { router.push('/') }}
+                        onPress={() => {router.push('/users/misCitas') }}
                     />
                     <DrawerItem
                         icon={({ color }) => (<Feather name='log-out' size={25} color={color} />)}
