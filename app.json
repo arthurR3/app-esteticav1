@@ -1,21 +1,23 @@
 {
   "expo": {
-    "name": "app-esteticav1",
+    "name": "Estetica Emma",
     "slug": "app-esteticav1",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo_estetica.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.arthur23.appesteticav1"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/logo_estetica.png",
+        "backgroundColor": "#00000000"
+      },
+      "package": "com.arthur23.appesteticav1"
     },
     "web": {
       "bundler": "metro",
@@ -28,8 +30,7 @@
         "expo-splash-screen",
         {
           "image": "./assets/images/splashEstetica.jpg",
-          "imageWidth": 200,
-          "resizeMode": "contain",
+          "resizeMode": "cover",
           "backgroundColor": "#ffffff"
         }
       ],
@@ -37,6 +38,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f926a881-0c01-4ca3-94d9-36fe10db0cdf"
+      }
+    },
+    "owner": "arthur23"
   }
 }

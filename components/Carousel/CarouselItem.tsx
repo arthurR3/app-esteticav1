@@ -32,12 +32,10 @@ const CarouselItem: React.FC<CarouselItemProps> = ({ products }) => {
           <Link href={`/details/productos/${item.id}`} asChild key={item.id}>
             <Pressable>
 
-              <View>  {/* Agregar contenedor View */}
                 <View style={[styles.card]}>
                   <Image source={{ uri: item.image }} style={styles.image} />
                   <Text style={styles.title}>{item.name}</Text>
                 </View>
-              </View>
             </Pressable>
 
           </Link>
@@ -71,11 +69,9 @@ const CarouselServices: React.FC<CarouselServicesProps> = ({ servicios }) => {
           <Link href={`/details/servicios/${item.id}`} asChild key={item.id}>
             <Pressable>
 
-              <View>  {/* Agregar contenedor View */}
-                <View style={[styles.card]}>
-                  <Image source={{ uri: item.image }} style={styles.image} />
-                  <Text style={styles.title}>{item.name}</Text>
-                </View>
+              <View style={[styles.card]}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+                <Text style={styles.title}>{item.name}</Text>
               </View>
             </Pressable>
 

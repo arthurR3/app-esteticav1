@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
+import { Alert, Modal, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useUsuarioContext } from '@/components/context/userContext'
 import InputLogin from '@/components/InputText'
 import CustomButton from '@/components/CustomButton'
@@ -10,10 +10,11 @@ import { parseDuration } from '@/components/servicios/Horario/format_utilsTime'
 import { router, useLocalSearchParams } from 'expo-router'
 import { adjustDateForApi, fetcBookedSlots, generateTimes } from '@/components/servicios/Horario/serviciosTime'
 import { Picker } from '@react-native-picker/picker'
-import { jwtDecode  } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import { DecodeToken, UserData } from '@/interfaces/auth.interface'
 import DatesService from '@/services/dates.service'
 import { ActivityIndicator } from '@react-native-material/core'
+import Encuesta from '@/components/Encuesta'
 
 export default function CitasScreen() {
   const { state } = useUsuarioContext();
@@ -29,6 +30,8 @@ export default function CitasScreen() {
   const [bookedSlots, setBookedSlots] = useState([]);
   const [workDay, setWorkDay] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showSurvey, setShowSurvey] = useState(false); // Estado para mostrar la encuesta
+
   useEffect(() => {
     if (state.token) {
 
@@ -103,6 +106,14 @@ export default function CitasScreen() {
     setSelectDate(date);
   };
 
+  const handleSurveyComplete = () => {
+    setShowSurvey(false); // Oculta la encuesta cuando se completa
+    Alert.alert("¡Gracias por completar la encuesta!");
+    router.replace('/');
+
+
+  };
+
   const handleSubmit = async () => {
 
     if (!userToken?.email || !selectedTime || !selectDate || !serviceObject) {
@@ -121,12 +132,12 @@ export default function CitasScreen() {
     //console.log(data.data.date)
     const response = await DatesService.sendDate(data)
     if (response.success) {
+      setShowSurvey(true)
       setSelectedTime(null);
       setSelectDate(null);
       setSelectedService(null);
 
       Alert.alert('Cita agendada con exito!');
-      router.replace('/');
     } else {
       Alert.alert('Error al agendar la cita, intente nuevamente.')
     }
@@ -146,15 +157,26 @@ export default function CitasScreen() {
   }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: 100 }} keyboardShouldPersistTaps="handled">
+      {showSurvey && userToken?.idUser && (
+        <Modal
+          visible={showSurvey}
+          transparent
+          animationType="fade"
+          onRequestClose={() => { }}
+        >
+          <View style={styles.modalContainer}>
+            <Encuesta id_user={userToken?.idUser} onComplete={handleSurveyComplete} />
+          </View>
+        </Modal>)}
       <SafeAreaView style={{ marginHorizontal: 18 }}>
         <Text style={styles.titleContainer}>Reserva una cita ahora mismo!</Text>
 
+        <InputLogin placeholder='' image='cut-outline'>
           <Picker selectedValue={selectedService}
             onValueChange={(value) => { setSelectedService(value), setServiceObject(services.find(service => service.id === Number(value))) }}
-            style={{
-              color: 'black', // Asegura que el texto sea negro
-            }}
+            itemStyle={{ color: 'black' }} // Estilo para los ítems
+
           >
             <Picker.Item label='Selecciona un servicio' value={null} />
             {services.map((service) => (
@@ -162,6 +184,7 @@ export default function CitasScreen() {
               />
             ))}
           </Picker>
+        </InputLogin>
         <View>
           <CustomDatePicker onDateChange={handleDateChange} display='spinner' minimumDate={new Date(Date.now())} filterDate={isWorkDay} />
         </View>
@@ -170,6 +193,7 @@ export default function CitasScreen() {
           <InputLogin placeholder='' image='time'>
             <Picker selectedValue={selectedTime}
               onValueChange={(value) => { setSelectedTime(value) }}
+              itemStyle={{ color: 'black' }} // Estilo para los ítems
             >
               <Picker.Item label='Selecciona un horario' value={null} />
               {generateTimes(calculateDuration, bookedSlots, workSchedule, exceptions, selectDate).map((time, index) => (
@@ -179,10 +203,11 @@ export default function CitasScreen() {
           </InputLogin>
         )}
         {loading ? (
-          <ActivityIndicator  color='#452e3f' style={styles.loading} />
+          <ActivityIndicator color='#452e3f' style={styles.loading} />
         ) : (
           <CustomButton title='Agendar' onPress={handleSubmit} disabled={loading} />
         )}
+
       </SafeAreaView>
     </ScrollView>
   );

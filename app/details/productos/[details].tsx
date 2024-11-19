@@ -4,7 +4,7 @@ import CustomButton from '@/components/CustomButton'
 import InputLogin from '@/components/InputText'
 import { CartItem, Productos } from '@/interfaces/products.interface'
 import ProductService from '@/services/products.service'
-import { useLocalSearchParams } from 'expo-router'
+import { router, useLocalSearchParams } from 'expo-router'
 import React, { useEffect, useState } from 'react'
 import { ActivityIndicator, ScrollView, Text, View, Button, Image, StyleSheet, Alert } from 'react-native'
 
@@ -64,6 +64,7 @@ export default function DetailsScreen() {
       `${product.name} se agregó al carrito correctamente.`,
       [{ text: "OK" }]
     );
+    router.navigate('/users/carrito')
   };
 
 

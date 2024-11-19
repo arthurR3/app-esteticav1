@@ -32,6 +32,7 @@ export default function ProductosScreen() {
       imageUrl={item.image}
       descripcion={item.description}
       price={item.price}
+      amount={item.amount}
       customStyles={{
         containerStyle: styles.container,
         cardStyle: styles.card,
