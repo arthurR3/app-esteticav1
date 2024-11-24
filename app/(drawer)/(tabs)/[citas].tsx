@@ -42,6 +42,18 @@ export default function CitasScreen() {
       setUserToken(decoded.user)
     }
   }, [state.token])
+  useEffect(() =>{ 
+    const checkStatus = async () => {
+      const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/survey/${userToken?.idUser}`)
+      console.log('response',response.data.data)
+      if (response.data.success && response.data.data.length === 0) {
+        setCompleteSurvey(false);
+      } else {
+        setCompleteSurvey(true);
+      }
+    }
+    checkStatus();
+  },[userToken?.idUser])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,13 +85,6 @@ export default function CitasScreen() {
         // Obtenemos los días hábiles de trabajo
         setWorkDay(schedule.map((day: Schedule) => day.dia_semana));
 
-
-        const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/survey/${userToken?.idUser}`)
-        if (response.data.success && response.data.data.length === 0) {
-          setCompleteSurvey(false);
-        } else {
-          setCompleteSurvey(true);
-        }
       } catch (error) {
         console.log('Error getting work day', error);
       }
