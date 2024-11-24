@@ -43,7 +43,7 @@ export default function HomeScreen() {
           </View>
         </View>
         <View style={styles.containerButton}>
-          <CustomButton title="Agendar Cita" onPress={() => router.push('/')} iconName="calendar-number-outline" disabled={false} />
+          <CustomButton title="Agendar Cita" onPress={() => router.navigate('/citas')} iconName="calendar-number-outline" disabled={false} />
         </View>
         <View>
           <Text style={styles.itemCard}>Productos más vendidos</Text>

@@ -15,6 +15,7 @@ import { DecodeToken, UserData } from '@/interfaces/auth.interface'
 import DatesService from '@/services/dates.service'
 import { ActivityIndicator } from '@react-native-material/core'
 import Encuesta from '@/components/Encuesta'
+import axios from 'axios'
 
 export default function CitasScreen() {
   const { state } = useUsuarioContext();
@@ -31,6 +32,8 @@ export default function CitasScreen() {
   const [workDay, setWorkDay] = useState<number[]>([]);
   const [loading, setLoading] = useState(false);
   const [showSurvey, setShowSurvey] = useState(false); // Estado para mostrar la encuesta
+  const [completeSurvey, setCompleteSurvey] = useState<boolean | null>(false);
+
 
   useEffect(() => {
     if (state.token) {
@@ -69,6 +72,14 @@ export default function CitasScreen() {
 
         // Obtenemos los días hábiles de trabajo
         setWorkDay(schedule.map((day: Schedule) => day.dia_semana));
+
+
+        const response = await axios.get(`https://back-estetica-production-e475.up.railway.app/api/v1/survey/${userToken?.idUser}`)
+        if (response.data.success && response.data.data.length === 0) {
+          setCompleteSurvey(false);
+        } else {
+          setCompleteSurvey(true);
+        }
       } catch (error) {
         console.log('Error getting work day', error);
       }
@@ -132,10 +143,17 @@ export default function CitasScreen() {
     //console.log(data.data.date)
     const response = await DatesService.sendDate(data)
     if (response.success) {
-      setShowSurvey(true)
-      setSelectedTime(null);
-      setSelectDate(null);
-      setSelectedService(null);
+      if (!completeSurvey) {
+        setShowSurvey(true)
+        setSelectedTime(null);
+        setSelectDate(null);
+        setSelectedService(null);
+      }else{
+        setSelectedTime(null);
+        setSelectDate(null);
+        setSelectedService(null);
+        router.replace('/');
+      }
 
       Alert.alert('Cita agendada con exito!');
     } else {

@@ -7,6 +7,9 @@ import InputLogin from '@/components/InputText';
 import { useUsuarioContext } from '@/components/context/userContext';
 import useValidation from '@/hooks/validation/useValidation';
 import AuthService from '@/services/auth.service';
+import { jwtDecode } from 'jwt-decode';
+import { UserData } from '@/interfaces/auth.interface';
+import Encuesta from '@/components/Encuesta';
 
 
 
@@ -17,6 +20,16 @@ export default function LoginScreen() {
   const [secureText, setSecureText] = useState(true);
   const [loading, setLoading] = useState(false); 
   const { emailError, passwordError, validationEmail, validationPassword } = useValidation();
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
+  const [idUser, setIdUser] = useState<number | null>(null);
+
+
+  const handleSurveyComplete = () => {
+    setShowSurveyModal(false);
+    Alert.alert('Encuesta completa','Gracias por su participación!')
+    setTimeout(() => router.replace('/'), 1000);
+
+  };
 
   const handleSubmit = async () => {
     const isEmailValid = validationEmail(email);
@@ -30,7 +43,14 @@ export default function LoginScreen() {
       if (response.success) {
         // Iniciar sesión y redirigir si tiene éxito
         dispatch({ type: 'login', payload: response.data.data });
-        router.replace('/');
+        const token = jwtDecode<UserData>(response.data.data)
+        if (token.showSurvey) {
+          setShowSurveyModal(true);
+          setIdUser(token.idUser);
+        }
+        if(!token.showSurvey){
+          router.replace('/');
+        }
       } else {
         // Mostrar la alerta basada en el código de error
         Alert.alert('Error Inesperado', response.message);
@@ -46,6 +66,7 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <>
       <View>
         <Text style={styles.welcome}>Bienvenido</Text>
         <Text style={styles.subtitle}>Inicia sesión para continuar.</Text>
@@ -84,6 +105,10 @@ export default function LoginScreen() {
         <Link style={{ margin: 15, fontSize: 20, alignSelf: 'center' }} href={'/(auth)/forgetted'}><Text>Recuperar contraseña</Text></Link>
         <CustomButton title='Crear cuenta' onPress={toogleAccount}  disabled={false} />
       </View>
+      </>
+      {showSurveyModal && idUser !== null && (
+        <Encuesta id_user={idUser} onComplete={handleSurveyComplete}/>
+      )}
     </SafeAreaView>
   );
 }

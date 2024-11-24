@@ -26,19 +26,15 @@
     },
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splashEstetica.jpg",
-          "resizeMode": "cover",
-          "backgroundColor": "#ffffff"
-        }
-      ],
       "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true
     },
+    "splash": {
+    "image": "./assets/images/logo_estetica.png",
+    "resizeMode": "contain"
+  },
     "extra": {
       "router": {
         "origin": false

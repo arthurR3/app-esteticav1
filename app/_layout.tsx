@@ -9,6 +9,7 @@ import { UsuarioProvider } from '@/components/context/userContext';
 import { CarritoProvider } from '@/components/context/carritoContext';
 import Toast from 'react-native-toast-message';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import { setStatusBarBackgroundColor, setStatusBarStyle } from 'expo-status-bar';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -17,6 +18,8 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
+  setStatusBarBackgroundColor('#000000')
+  setStatusBarStyle('light')
   DarkTheme.colors.background = '#fff0b4'
   useEffect(() => {
     if (loaded) {

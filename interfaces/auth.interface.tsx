@@ -5,8 +5,9 @@ export interface UserData {
     last_name2: string;
     email: string;
     password: string;
-    phone: string;
+    phone: string;  
     birthday: string;
+    showSurvey: boolean;
 }
 
 export interface DecodeToken {
